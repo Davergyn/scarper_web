@@ -1,0 +1,23 @@
+# ============================================
+# WebIntel AI - Backend Dependencies
+# ============================================
+
+# Framework
+fastapi==0.115.*
+uvicorn[standard]==0.34.*
+pydantic==2.11.*
+pydantic-settings==2.9.*
+
+# HTTP Client & HTML Parsing
+httpx==0.28.*
+beautifulsoup4==4.13.*
+lxml==5.4.*
+
+# YouTube Scraper
+yt-dlp==2025.9.*
+
+# Dynamic Rendering (Headless Browser)
+playwright==1.52.*
+
+# Utilities
+python-dotenv==1.1.*
