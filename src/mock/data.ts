@@ -1,0 +1,181 @@
+import type { AIInsight, FileItem, KPIStat, ScrapedRow, SentimentData } from '@/types';
+
+export const mockAIInsight: AIInsight = {
+  summary:
+    'Analisis dari 1.247 komentar YouTube menunjukkan sentimen positif dominan (68.3%) terhadap produk. Mayoritas pengguna memuji kualitas dan harga. Terdapat concern signifikan (18.5%) terkait packaging dan waktu pengiriman.',
+  keyFindings: [
+    'Sentimen positif mendominasi dengan 68.3% dari total komentar',
+    'Topik "kualitas produk" memiliki engagement tertinggi (342 mention)',
+    'Keluhan terbanyak terkait waktu pengiriman (12.7% dari sentimen negatif)',
+    'Peak engagement terjadi pada jam 19:00 - 22:00 WIB',
+  ],
+  recommendation:
+    'Fokuskan strategi konten pada highlight kualitas produk. Perbaiki proses packaging dan koordinasi dengan kurir untuk mengurangi keluhan pengiriman.',
+};
+
+export const mockKPIStats: KPIStat[] = [
+  {
+    label: 'Total Data Extracted',
+    value: '1,247',
+    change: '+23.5%',
+    changeType: 'positive',
+    icon: 'database',
+  },
+  {
+    label: 'Positive Sentiment',
+    value: '68.3%',
+    change: '+5.2%',
+    changeType: 'positive',
+    icon: 'trending-up',
+  },
+  {
+    label: 'Negative Sentiment',
+    value: '18.5%',
+    change: '-2.1%',
+    changeType: 'positive',
+    icon: 'trending-down',
+  },
+  {
+    label: 'Processing Time',
+    value: '4.2s',
+    change: '-0.8s',
+    changeType: 'positive',
+    icon: 'clock',
+  },
+];
+
+export const mockSentimentData: SentimentData[] = [
+  { name: 'Positive', value: 852, color: '#10b981' },
+  { name: 'Negative', value: 231, color: '#ef4444' },
+  { name: 'Neutral', value: 164, color: '#6366f1' },
+];
+
+export const mockTableData: ScrapedRow[] = [
+  {
+    id: '1',
+    title: 'Produk bagus, kualitas premium!',
+    source: 'YouTube Comment',
+    sentiment: 'positive',
+    score: 0.92,
+    date: '2026-09-28',
+    content: 'Barang sudah sampai, kualitasnya bagus banget. Packaging rapi dan aman. Recommended seller!',
+    url: 'https://youtube.com/watch?v=abc123',
+  },
+  {
+    id: '2',
+    title: 'Pengiriman terlalu lama',
+    source: 'YouTube Comment',
+    sentiment: 'negative',
+    score: 0.15,
+    date: '2026-09-27',
+    content: 'Sudah 2 minggu belum sampai. Tracking tidak update. Sangat mengecewakan pelayanannya.',
+    url: 'https://youtube.com/watch?v=abc123',
+  },
+  {
+    id: '3',
+    title: 'Harga terjangkau untuk kualitas ini',
+    source: 'YouTube Comment',
+    sentiment: 'positive',
+    score: 0.87,
+    date: '2026-09-27',
+    content: 'Dibanding kompetitor, harga produk ini sangat bersaing. Worth every penny!',
+    url: 'https://youtube.com/watch?v=abc123',
+  },
+  {
+    id: '4',
+    title: 'Biasa saja, tidak ada yang istimewa',
+    source: 'YouTube Comment',
+    sentiment: 'neutral',
+    score: 0.52,
+    date: '2026-09-26',
+    content: 'Produknya standar, sesuai harga. Tidak ada fitur yang menonjol dibanding yang lain.',
+    url: 'https://youtube.com/watch?v=abc123',
+  },
+  {
+    id: '5',
+    title: 'Warna tidak sesuai gambar',
+    source: 'YouTube Comment',
+    sentiment: 'negative',
+    score: 0.21,
+    date: '2026-09-26',
+    content: 'Warna yang diterima berbeda dengan yang di foto. Customer service tidak responsif.',
+    url: 'https://youtube.com/watch?v=abc123',
+  },
+  {
+    id: '6',
+    title: 'Review detail dan jujur',
+    source: 'YouTube Comment',
+    sentiment: 'positive',
+    score: 0.89,
+    date: '2026-09-25',
+    content: 'Setelah pemakaian 1 bulan, produk masih awet dan performanya konsisten. Highly recommended!',
+    url: 'https://youtube.com/watch?v=abc123',
+  },
+  {
+    id: '7',
+    title: 'Packaging kurang aman',
+    source: 'YouTube Comment',
+    sentiment: 'negative',
+    score: 0.18,
+    date: '2026-09-25',
+    content: 'Barang sampai dalam kondisi penyok. Bubble wrap tipis sekali. Perlu diperbaiki packagingnya.',
+    url: 'https://youtube.com/watch?v=abc123',
+  },
+  {
+    id: '8',
+    title: 'Best product tahun ini',
+    source: 'YouTube Comment',
+    sentiment: 'positive',
+    score: 0.95,
+    date: '2026-09-24',
+    content: 'Tanpa ragu ini adalah produk terbaik yang pernah saya beli tahun ini. Semuanya sempurna!',
+    url: 'https://youtube.com/watch?v=abc123',
+  },
+  {
+    id: '9',
+    title: 'Fitur lengkap dan mudah digunakan',
+    source: 'Google Maps Review',
+    sentiment: 'positive',
+    score: 0.91,
+    date: '2026-09-24',
+    content: 'Interface yang user-friendly dan fiturnya sangat lengkap. Tutorial juga tersedia untuk pemula.',
+    url: 'https://maps.google.com/place/xyz',
+  },
+  {
+    id: '10',
+    title: 'Ada bug di update terbaru',
+    source: 'Social Media',
+    sentiment: 'negative',
+    score: 0.25,
+    date: '2026-09-23',
+    content: 'Setelah update versi terbaru, aplikasi sering crash. Mohon segera diperbaiki developer.',
+    url: 'https://twitter.com/user/status/123',
+  },
+  {
+    id: '11',
+    title: 'Desain elegan dan premium',
+    source: 'YouTube Comment',
+    sentiment: 'positive',
+    score: 0.88,
+    date: '2026-09-23',
+    content: 'Desainnya minimalis tapi elegan. Bahan materialnya juga premium. Cocok untuk hadiah.',
+  },
+  {
+    id: '12',
+    title: 'Perlu improve customer support',
+    source: 'Google Maps Review',
+    sentiment: 'neutral',
+    score: 0.45,
+    date: '2026-09-22',
+    content: 'Produk oke, tapi respon customer support agak lambat. Butuh 2 hari untuk mendapat jawaban.',
+  },
+];
+
+export const mockFiles: FileItem[] = [
+  { id: '1', name: 'analisis_sentimen_report.pdf', type: 'PDF', size: '2.4 MB', url: '#' },
+  { id: '2', name: 'data_komentar_raw.xlsx', type: 'Excel', size: '1.8 MB', url: '#' },
+  { id: '3', name: 'jurnal_nlp_bahasa_indonesia.pdf', type: 'PDF', size: '5.1 MB', url: '#' },
+  { id: '4', name: 'sentiment_visualization.png', type: 'Image', size: '890 KB', url: '#' },
+  { id: '5', name: 'engagement_metrics_q3.csv', type: 'CSV', size: '340 KB', url: '#' },
+  { id: '6', name: 'competitive_analysis.docx', type: 'Word', size: '1.2 MB', url: '#' },
+];
