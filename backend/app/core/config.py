@@ -24,7 +24,11 @@ class Settings(BaseSettings):
     # CORS
     FRONTEND_URL: str = "http://localhost:5173"
 
-    # LLM (future)
+    # LLM via OpenRouter
+    OPENROUTER_API_KEY: str | None = None
+    LLM_MODEL: str = "google/gemini-flash-1.5"
+
+    # LLM (legacy placeholders, kept for reference)
     OPENAI_API_KEY: str | None = None
     GOOGLE_API_KEY: str | None = None
 

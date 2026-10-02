@@ -9,13 +9,9 @@ import type {
   ScrapingMode,
   SentimentData,
 } from '@/types';
-import {
-  mockAIInsight,
-  mockFiles,
-  mockKPIStats,
-  mockSentimentData,
-  mockTableData,
-} from '@/mock/data';
+
+// Backend API base URL
+const API_BASE_URL = 'http://localhost:8000';
 
 interface AppState {
   // Theme
@@ -36,6 +32,7 @@ interface AppState {
   // Processing
   status: ProcessingStatus;
   progress: number;
+  errorMessage: string | null;
 
   // Results
   aiInsight: AIInsight | null;
@@ -52,7 +49,8 @@ interface AppState {
   addChatMessage: (message: Omit<ChatMessage, 'id' | 'timestamp'>) => void;
 
   // Actions
-  startProcessing: () => void;
+  checkApiConnection: () => Promise<void>;
+  startProcessing: () => Promise<void>;
   reset: () => void;
 }
 
@@ -79,6 +77,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   // Processing
   status: 'idle',
   progress: 0,
+  errorMessage: null,
 
   // Results
   aiInsight: null,
@@ -113,40 +112,85 @@ export const useAppStore = create<AppState>((set, get) => ({
     })),
 
   // Actions
-  startProcessing: () => {
-    const { url } = get();
+  checkApiConnection: async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/health`, { signal: AbortSignal.timeout(5000) });
+      set({ apiConnected: res.ok });
+    } catch {
+      set({ apiConnected: false });
+    }
+  },
+
+  startProcessing: async () => {
+    const { url, mode, prompt } = get();
     if (!url.trim()) return;
 
-    set({ status: 'processing', progress: 0 });
+    set({ status: 'processing', progress: 0, errorMessage: null });
 
-    // Simulate progressive loading
-    const steps = [12, 25, 38, 50, 62, 75, 88, 95, 100];
-    let step = 0;
-
-    const interval = setInterval(() => {
-      if (step < steps.length) {
-        set({ progress: steps[step] });
-        step++;
-      } else {
-        clearInterval(interval);
-        set({
-          status: 'completed',
-          progress: 100,
-          aiInsight: mockAIInsight,
-          kpiStats: mockKPIStats,
-          sentimentData: mockSentimentData,
-          tableData: mockTableData,
-          files: mockFiles,
-          processedTime: 4.2,
-        });
+    // Animate progress while waiting for backend response
+    const progressSteps = [5, 12, 20, 30, 40, 50, 55, 60, 65, 70];
+    let stepIndex = 0;
+    const progressInterval = setInterval(() => {
+      if (stepIndex < progressSteps.length) {
+        set({ progress: progressSteps[stepIndex] });
+        stepIndex++;
       }
-    }, 350);
+    }, 800);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/v1/scrape`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url, mode, prompt }),
+      });
+
+      clearInterval(progressInterval);
+
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => null);
+        const errorMsg =
+          errorBody?.detail?.error ||
+          errorBody?.detail ||
+          `Server error: ${response.status} ${response.statusText}`;
+        throw new Error(typeof errorMsg === 'string' ? errorMsg : JSON.stringify(errorMsg));
+      }
+
+      // Animate to 90% before parsing
+      set({ progress: 90 });
+
+      const data = await response.json();
+
+      // Small delay for smooth UX transition
+      await new Promise((r) => setTimeout(r, 300));
+
+      set({
+        status: 'completed',
+        progress: 100,
+        aiInsight: data.aiInsight ?? null,
+        kpiStats: data.kpiStats ?? [],
+        sentimentData: data.sentimentData ?? [],
+        tableData: data.tableData ?? [],
+        files: data.files ?? [],
+        processedTime: data.processedTime ?? 0,
+      });
+    } catch (error) {
+      clearInterval(progressInterval);
+      const message =
+        error instanceof Error ? error.message : 'Terjadi kesalahan yang tidak diketahui';
+      console.error('[WebIntel] Scraping failed:', message);
+      set({
+        status: 'error',
+        progress: 0,
+        errorMessage: message,
+      });
+    }
   },
 
   reset: () =>
     set({
       status: 'idle',
       progress: 0,
+      errorMessage: null,
       aiInsight: null,
       kpiStats: [],
       sentimentData: [],

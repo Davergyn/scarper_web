@@ -71,6 +71,8 @@ export function Header() {
                     ? 'animate-pulse bg-accent-amber'
                     : status === 'completed'
                     ? 'bg-accent-emerald'
+                    : status === 'error'
+                    ? 'bg-accent-rose'
                     : 'bg-surface-200 dark:bg-surface-700'
                 )}
               />
@@ -79,6 +81,8 @@ export function Header() {
                   ? 'Processing...'
                   : status === 'completed'
                   ? 'Completed'
+                  : status === 'error'
+                  ? 'Error'
                   : 'Idle'}
               </span>
             </div>
@@ -86,7 +90,7 @@ export function Header() {
 
           {/* Right - Actions */}
           <div className="flex items-center gap-2">
-            {status === 'completed' && (
+            {(status === 'completed' || status === 'error') && (
               <button
                 onClick={reset}
                 className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-surface-200 transition-all hover:bg-surface-200/10 hover:text-brand-400 dark:text-surface-200/60 dark:hover:text-brand-400"

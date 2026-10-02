@@ -16,6 +16,9 @@ lxml==5.4.*
 # YouTube Scraper
 yt-dlp==2025.9.*
 
+# LLM Client (OpenRouter-compatible via OpenAI SDK)
+openai==1.78.*
+
 # Dynamic Rendering (Headless Browser)
 playwright==1.52.*
 
